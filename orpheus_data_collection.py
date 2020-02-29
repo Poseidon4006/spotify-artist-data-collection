@@ -9,7 +9,7 @@ About H.Hahn(brief): Three-time Grammy Award-winning violinist Hilary Hahn is re
              source: https://open.spotify.com/artist/5JdT0LYJdlPbTC58p60WTX/about
                wiki: https://en.wikipedia.org/wiki/Hilary_Hahn
 
-Credits**:
+Credits*:
 This was adapted from a blog post in medium.com by the user@RareLoot on 28/02/2020 
 here: https://medium.com/@RareLoot/extracting-spotify-data-on-your-favourite-artist-via-python-d58bc92a4330   
 '''

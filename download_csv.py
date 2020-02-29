@@ -9,6 +9,7 @@ def yes_or_no():
         print("Input yes or no")
         answer = input(y_n_question + "(y/n):").lower().strip()
         print("")
+        
     if answer[0] == "y":
         return True
     else:
