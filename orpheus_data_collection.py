@@ -4,14 +4,14 @@ By using the Spotify Web API for collecting albums and tracks
 For a given Artist_name(Hilary Hahn in my example check out a brief overview from Spotify, link in the source)
 Writing the audio features(acousticness,tempo...) for the songs into a csv file.
 
-About H.Hahn(brief): Three-time Grammy Award-winning violinist Hilary Hahn is renowned for her virtuosity, 
+About H.Hahn(brief): Three-time Grammy Award-winning violinist Hilary Hahn is renowned for her virtuosity,
                           expansive interpretations, and creative programming.
              source: https://open.spotify.com/artist/5JdT0LYJdlPbTC58p60WTX/about
                wiki: https://en.wikipedia.org/wiki/Hilary_Hahn
 
 Credits*:
-This was adapted from a blog post in medium.com by the user@RareLoot on 28/02/2020 
-here: https://medium.com/@RareLoot/extracting-spotify-data-on-your-favourite-artist-via-python-d58bc92a4330   
+This was adapted from a blog post in medium.com by the user@RareLoot on 28/02/2020
+here: https://medium.com/@RareLoot/extracting-spotify-data-on-your-favourite-artist-via-python-d58bc92a4330
 '''
 import config
 import webbrowser
@@ -19,7 +19,7 @@ import os
 import time
 import numpy as np
 import pandas as pd
-import spotipy 
+import spotipy
 import download_csv as dc                                          # Basic function for yes_no
 from spotipy.oauth2 import SpotifyClientCredentials                # To access Spotify credentials
 
@@ -40,20 +40,20 @@ for i in range(len(sp_albums['items'])):
     album_names.append(sp_albums['items'][i]['name'])
     album_uris.append(sp_albums['items'][i]['uri'])
 
-# Extract key album track data from each album   
+# Extract key album track data from each album
 def albumSongs(uri):
-    album = uri                                                    
+    album = uri
     spotify_albums[album] = {}                                     # Dictionary for that specific album uri(like a unique identifier)
-    
-    spotify_albums[album]['album'] = []                            
+
+    spotify_albums[album]['album'] = []
     spotify_albums[album]['track_number'] = []
     spotify_albums[album]['id'] = []
     spotify_albums[album]['name'] = []
     spotify_albums[album]['uri'] = []
     tracks = sp.album_tracks(album)
 
-    for n in range(len(tracks['items'])):                  
-        spotify_albums[album]['album'].append(album_names[album_count]) 
+    for n in range(len(tracks['items'])):
+        spotify_albums[album]['album'].append(album_names[album_count])
         spotify_albums[album]['track_number'].append(
                   tracks['items'][n]['track_number'])
         spotify_albums[album]['id'].append(tracks['items'][n]['id'])
@@ -61,7 +61,7 @@ def albumSongs(uri):
         spotify_albums[album]['uri'].append(tracks['items'][n]['uri'])
 
 
-# Pull the track data from each album URI and 
+# Pull the track data from each album URI and
 # add to the new dictionary for album data
 spotify_albums = {}
 album_count = 0
@@ -69,7 +69,7 @@ for i in album_uris:                                                # For each a
     albumSongs(i)
     print("Album " + str(album_names[album_count]) \
         + " songs has been added to spotify_albums dictionary")
-    album_count+=1                                                  # Updates album count once all tracks have been added 
+    album_count+=1                                                  # Updates album count once all tracks have been added
 
 # Store key-values to store audio features
 def audio_features(album):
@@ -83,12 +83,12 @@ def audio_features(album):
     spotify_albums[album]['tempo'] = []
     spotify_albums[album]['valence'] = []
     spotify_albums[album]['popularity'] = []
-    
-    track_count = 0                          
+
+    track_count = 0
     for track in spotify_albums[album]['uri']:
-                                                                                   
+
         features = sp.audio_features(track)                           # Audio features for each track
-        
+
         # Appending relevant key-value
         spotify_albums[album]['acousticness'].        \
             append(features[0]['acousticness'])
@@ -107,7 +107,7 @@ def audio_features(album):
         spotify_albums[album]['speechiness'].append(features[0]['speechiness'])
         spotify_albums[album]['tempo'].append(features[0]['tempo'])
         spotify_albums[album]['valence'].append(features[0]['valence'])
-        
+
         #popularity is stored elsewhere
         popular = sp.track(track)
         spotify_albums[album]['popularity'].append(popular['popularity'])
@@ -131,8 +131,8 @@ for i in spotify_albums:
 """ for ei in spotify_albums:
     print(ei) """
 print(f'The artist:{name} has {len(spotify_albums)} albums')
- 
-# Organising data into a dictionary first. 
+
+# Organising data into a dictionary first.
 # Then create dataframe using pandas.
 dic_df = {}
 dic_df['album'] = []
@@ -150,9 +150,9 @@ dic_df['speechiness'] = []
 dic_df['tempo'] = []
 dic_df['valence'] = []
 dic_df['popularity'] = []
-for album in spotify_albums: 
+for album in spotify_albums:
     for feature in spotify_albums[album]:
-        dic_df[feature].extend(spotify_albums[album][feature])       
+        dic_df[feature].extend(spotify_albums[album][feature])
 len(dic_df['album'])
 df = pd.DataFrame.from_dict(dic_df)                                  # Exploiting Pandas' dataframe
 
